@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle Financeiro</title>
+    <!-- Google Fonts e Ícones -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --success-color: #50e3c2;
+            --danger-color: #e35064;
+            --dark-grey: #343a40;
+            --light-grey: #f8f9fa;
+            --border-color: #dee2e6;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            margin: 0; 
+            background-color: var(--light-grey); 
+            color: var(--dark-grey);
+        }
+        .container { 
+            max-width: 1200px; 
+            margin: 2em auto; 
+            background: white; 
+            padding: 2.5em; 
+            border-radius: 12px; 
+            box-shadow: var(--shadow);
+        }
+        h1, h2 { 
+            color: var(--dark-grey); 
+            font-weight: 600;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 1em;
+        }
+        h2 { 
+            border-bottom: 1px solid var(--border-color); 
+            padding-bottom: 10px; 
+            margin-top: 2.5em;
+            font-size: 1.5em;
+        }
+        form { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 15px; 
+            margin-bottom: 2em; 
+            align-items: center;
+        }
+        form input, form select { 
+            padding: 10px; 
+            border-radius: 8px; 
+            border: 1px solid var(--border-color); 
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            flex-grow: 1;
+        }
+        form button, .btn-link { 
+            padding: 12px 20px; 
+            color: white; 
+            border: none; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-weight: 600;
+            transition: all 0.2s ease-in-out;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+        }
+        form button { background-color: var(--primary-color); }
+        form button:hover { transform: translateY(-2px); box-shadow: 0 6px 10px rgba(74, 144, 226, 0.3); }
+        
+        .btn-link {
+            background-color: #6c757d;
+            text-decoration: none;
+        }
+        .btn-link:hover {
+            background-color: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        .graphs { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 30px; justify-content: center; margin-top: 2em;}
+        .graphs img { max-width: 100%; border: 1px solid var(--border-color); border-radius: 12px; box-shadow: var(--shadow); }
+        
+        table { width: 100%; border-collapse: separate; border-spacing: 0; margin-top: 2em; }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid var(--border-color); }
+        th { background-color: var(--light-grey); font-weight: 600; }
+        tbody tr:hover { background-color: #f1f3f5; }
+        td:first-child, th:first-child { border-top-left-radius: 8px; border-bottom-left-radius: 8px; }
+        td:last-child, th:last-child { border-top-right-radius: 8px; border-bottom-right-radius: 8px; }
+
+        .delete-btn { background-color: transparent; color: var(--danger-color); border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 1.2em; transition: color 0.2s; }
+        .delete-btn:hover { color: #a03d4a; }
+
+        .summary {
+            display: flex;
+            justify-content: space-around;
+            margin: 2em 0;
+            text-align: center;
+            flex-wrap: wrap;
+            gap: 1.5em;
+        }
+        .summary-card {
+            padding: 1.5em;
+            border-radius: 12px;
+            color: white;
+            flex-grow: 1;
+            min-width: 250px;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s ease-in-out;
+        }
+        .summary-card:hover { transform: translateY(-5px); }
+        .summary-card h3 { margin-top: 0; font-weight: 300; font-size: 1em; }
+        .summary-card p { font-size: 2em; font-weight: 700; margin: 0.2em 0 0 0; }
+        .summary-card i { font-size: 1.5em; margin-right: 10px; }
+        .entradas { background: linear-gradient(45deg, #50e3c2, #48c1a9); }
+        .saidas { background: linear-gradient(45deg, #e35064, #c94859); }
+        .saldo { background: linear-gradient(45deg, #4a90e2, #4382cb); }
+    </style>
+    <style>
+        .header-actions {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 1em;
+            padding: 0.5em 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .btn-logout {
+            background-color: var(--danger-color);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.2s;
+        }
+        .btn-logout:hover {
+            background-color: #c94859; /* A darker shade of danger-color */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-actions">
+            <span>Olá, <strong>{{ current_user.username }}</strong>!</span>
+            <a href="{{ url_for('logout') }}" class="btn-logout">Sair</a>
+        </div>
+        <h1><i class="fas fa-chart-pie"></i> Meu Controle Financeiro</h1>
+        <div class="summary">
+            <div class="summary-card entradas">
+                <h3><i class="fas fa-arrow-up"></i>Total de Entradas</h3>
+                <p>R$ {{ "%.2f"|format(total_entradas) }}</p>
+            </div>
+            <div class="summary-card saidas">
+                <h3><i class="fas fa-arrow-down"></i>Total de Saídas</h3>
+                <p>R$ {{ "%.2f"|format(total_saidas) }}</p>
+            </div>
+            <div class="summary-card saldo">
+                <h3><i class="fas fa-balance-scale"></i>Saldo Total</h3>
+                <p>R$ {{ "%.2f"|format(saldo_total) }}</p>
+            </div>
+        </div>
+
+        <h2>Filtros</h2>
+        <form action="/" method="get">
+            <select name="filtro_mes">
+                <option value="">Todos os Meses</option>
+                {% for mes in meses_disponiveis %}
+                    <option value="{{ mes }}" {% if mes == filtro_mes_selecionado %}selected{% endif %}>{{ mes }}</option>
+                {% endfor %}
+            </select>
+            <select name="filtro_responsavel">
+                <option value="">Todos os Responsáveis</option>
+                {% for resp in responsaveis_disponiveis %}
+                    <option value="{{ resp }}" {% if resp == filtro_responsavel_selecionado %}selected{% endif %}>{{ resp }}</option>
+                {% endfor %}
+            </select>
+            <select name="filtro_categoria">
+                <option value="">Todas as Categorias</option>
+                {% for cat in categorias_disponiveis %}
+                    <option value="{{ cat }}" {% if cat == filtro_categoria_selecionado %}selected{% endif %}>{{ cat }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit">Filtrar</button>
+            <a href="/" class="btn-link">Limpar</a>
+        </form>
+
+
+        <h2>Adicionar Novo Registro</h2>
+        <form action="/" method="post">
+            <select name="Tipo" required>
+                <option value="saida">Saída</option>
+                <option value="entrada">Entrada</option>
+            </select>
+            <input type="text" name="Categoria" placeholder="Categoria" required>
+            <input type="text" name="Descricao" placeholder="Descrição" required>
+            <input type="text" name="Valor" placeholder="Valor (ex: 50,25)" required>
+            <input type="text" name="Responsavel" placeholder="Responsável" required>
+            <button type="submit">Adicionar</button>
+        </form>
+
+        <h2>Análise Financeira</h2>
+        <div class="graphs">
+            <!-- As imagens dos gráficos serão inseridas aqui pelo Flask -->
+            {% if graph1_url %}
+                <img src="{{ graph1_url }}" alt="Gráfico de Gastos por Categoria">
+            {% endif %}
+            {% if graph2_url %}
+                <img src="{{ graph2_url }}" alt="Gráfico de Entradas e Saídas">
+            {% endif %}
+        </div>
+
+        <h2>Todos os Registros</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Tipo</th>
+                    <th>Categoria</th>
+                    <th>Descrição</th>
+                    <th>Valor</th>
+                    <th>Responsável</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in entries | reverse %}
+                <tr>
+                    <td>{{ entry.Data }}</td>
+                    <td>{{ entry.Tipo }}</td>
+                    <td>{{ entry.Categoria }}</td>
+                    <td>{{ entry.Descricao }}</td>
+                    <td>R$ {{ "%.2f"|format(entry.Valor) }}</td>
+                    <td>{{ entry.Responsavel }}</td>
+                    <td>
+                        <form action="{{ url_for('delete_record', record_index=entry.index) }}" method="post" style="margin:0; text-align: center;">
+                            <button type="submit" class="delete-btn" title="Deletar registro"><i class="fas fa-trash-alt"></i></button>
+                        </form>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="7" style="text-align: center; padding: 2em;">Nenhum registro encontrado para os filtros selecionados.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
